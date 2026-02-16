@@ -1,0 +1,26 @@
+version: "3"
+
+vars:
+  DEFAULT_REPO: '{{default "docker.io/jamaca1410" .DEFAULT_REPO}}'
+  PROFILE: '{{default "stage" .PROFILE}}'
+
+tasks:
+  app:run:
+    desc: Build and deploy app module (recommended)
+    cmds:
+      - skaffold run --default-repo={{.DEFAULT_REPO}} -m skaffold-test-app -p {{.PROFILE}}
+
+  app:deploy:
+    desc: Deploy app module from prebuilt image(s)
+    cmds:
+      - skaffold deploy --default-repo={{.DEFAULT_REPO}} -m skaffold-test-app -p {{.PROFILE}} --images {{.IMAGES}}
+
+  db:deploy:
+    desc: Deploy db module (no app build required)
+    cmds:
+      - skaffold deploy --default-repo={{.DEFAULT_REPO}} -m skaffold-test-db -p {{.PROFILE}}
+
+  all:run:
+    desc: Build and deploy all modules
+    cmds:
+      - skaffold run --default-repo={{.DEFAULT_REPO}} -p {{.PROFILE}}
