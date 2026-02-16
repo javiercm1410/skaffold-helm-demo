@@ -1,7 +1,7 @@
 apiVersion: skaffold/v4beta13
 kind: Config
 metadata:
-  name: skaffold-test
+  name: skaffold-test-app
 
 build:
   artifacts:
@@ -65,3 +65,56 @@ profiles:
             setValueTemplates:
               image.repository: "{{.IMAGE_REPO_skaffold_test}}"
               image.tag: "{{.IMAGE_TAG_skaffold_test}}"
+
+---
+
+apiVersion: skaffold/v4beta13
+kind: Config
+metadata:
+  name: skaffold-test-db
+
+deploy:
+  helm:
+    releases:
+      - name: skaffold-test-db
+        remoteChart: postgresql
+        repo: https://charts.bitnami.com/bitnami
+        valuesFiles:
+          - .helm-db/values.yaml
+
+profiles:
+  - name: stage
+    deploy:
+      helm:
+        releases:
+          - name: skaffold-test-db
+            remoteChart: postgresql
+            repo: https://charts.bitnami.com/bitnami
+            namespace: skaffold-test-stage
+            createNamespace: true
+            valuesFiles:
+              - .helm-db/values.yaml
+
+  - name: uat
+    deploy:
+      helm:
+        releases:
+          - name: skaffold-test-db
+            remoteChart: postgresql
+            repo: https://charts.bitnami.com/bitnami
+            namespace: skaffold-test-uat
+            createNamespace: true
+            valuesFiles:
+              - .helm-db/values.yaml
+
+  - name: production
+    deploy:
+      helm:
+        releases:
+          - name: skaffold-test-db
+            remoteChart: postgresql
+            repo: https://charts.bitnami.com/bitnami
+            namespace: skaffold-test-production
+            createNamespace: true
+            valuesFiles:
+              - .helm-db/values.yaml

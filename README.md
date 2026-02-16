@@ -17,8 +17,7 @@ npm run build
 npm run start
 ```
 
-
 ## TODO
 
-- See values and templating
+- Add cache configs
 - See multiple helm chart declaration
