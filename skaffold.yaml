@@ -1,0 +1,67 @@
+apiVersion: skaffold/v4beta13
+kind: Config
+metadata:
+  name: skaffold-test
+
+build:
+  artifacts:
+    - image: skaffold-test
+      docker:
+        dockerfile: Dockerfile
+
+deploy:
+  helm:
+    releases:
+      - name: skaffold-test
+        chartPath: .helm
+        valuesFiles:
+          - .helm/values.yaml
+        setValueTemplates:
+          image.repository: "{{.IMAGE_REPO_skaffold_test}}"
+          image.tag: "{{.IMAGE_TAG_skaffold_test}}"
+
+profiles:
+  - name: stage
+    deploy:
+      helm:
+        releases:
+          - name: skaffold-test
+            chartPath: .helm
+            namespace: skaffold-test-stage
+            createNamespace: true
+            valuesFiles:
+              - .helm/values.yaml
+              - .helm/values/stage.yaml
+            setValueTemplates:
+              image.repository: "{{.IMAGE_REPO_skaffold_test}}"
+              image.tag: "{{.IMAGE_TAG_skaffold_test}}"
+
+  - name: uat
+    deploy:
+      helm:
+        releases:
+          - name: skaffold-test
+            chartPath: .helm
+            namespace: skaffold-test-uat
+            createNamespace: true
+            valuesFiles:
+              - .helm/values.yaml
+              - .helm/values/uat.yaml
+            setValueTemplates:
+              image.repository: "{{.IMAGE_REPO_skaffold_test}}"
+              image.tag: "{{.IMAGE_TAG_skaffold_test}}"
+
+  - name: production
+    deploy:
+      helm:
+        releases:
+          - name: skaffold-test
+            chartPath: .helm
+            namespace: skaffold-test-production
+            createNamespace: true
+            valuesFiles:
+              - .helm/values.yaml
+              - .helm/values/production.yaml
+            setValueTemplates:
+              image.repository: "{{.IMAGE_REPO_skaffold_test}}"
+              image.tag: "{{.IMAGE_TAG_skaffold_test}}"

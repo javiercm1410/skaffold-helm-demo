@@ -1,0 +1,39 @@
+replicaCount: 1
+
+image:
+  repository: skaffold-test
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+
+container:
+  port: 3000
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi
+
+# Shared values — referenced via tpl in env-specific values files
+project: skaffold-test
+domainRoot: example.com
+
+# These get composed per-env using Go template strings
+env: default
+domain: "{{ .Values.project }}.{{ .Values.domainRoot }}"
+apiUrl: "https://api.{{ .Values.domainRoot }}/api"
+
+
+# environments
+environmentVariables:
+  # Environment settings
+  NODE_ENV: '{{ $.Values.werf.env }}'
+
+  # Application settings

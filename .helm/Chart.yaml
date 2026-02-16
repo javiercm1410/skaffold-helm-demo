@@ -1,0 +1,6 @@
+apiVersion: v2
+name: skaffold-test
+description: Sample Next.js app for testing deployment methods
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

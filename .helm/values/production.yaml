@@ -1,0 +1,19 @@
+env: production
+
+domainRoot: example.com
+
+domain: "{{ .Values.project }}.{{ .Values.domainRoot }}"
+apiUrl: "https://api.{{ .Values.domainRoot }}/api"
+
+replicaCount: 3
+
+service:
+  type: ClusterIP
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 512Mi
+  limits:
+    cpu: 2000m
+    memory: 1Gi

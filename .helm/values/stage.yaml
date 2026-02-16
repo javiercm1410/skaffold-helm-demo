@@ -1,0 +1,19 @@
+env: stage
+
+domainRoot: stage.example.com
+
+domain: "{{ .Values.project }}.{{ .Values.domainRoot }}"
+apiUrl: "https://api.{{ .Values.domainRoot }}/api"
+
+replicaCount: 1
+
+service:
+  type: NodePort
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi

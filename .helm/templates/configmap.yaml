@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.project }}-config
+  labels:
+    app.kubernetes.io/name: {{ .Values.project }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+data:
+  ENV: {{ .Values.env | quote }}
+  DOMAIN: {{ tpl .Values.domain . | quote }}
+  API_URL: {{ tpl .Values.apiUrl . | quote }}

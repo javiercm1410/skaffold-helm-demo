@@ -1,0 +1,19 @@
+env: uat
+
+domainRoot: uat.example.com
+
+domain: "{{ .Values.project }}.{{ .Values.domainRoot }}"
+apiUrl: "https://api.{{ .Values.domainRoot }}/api"
+
+replicaCount: 2
+
+service:
+  type: ClusterIP
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: 1000m
+    memory: 512Mi
