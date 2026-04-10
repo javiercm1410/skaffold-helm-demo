@@ -71,50 +71,99 @@ profiles:
 apiVersion: skaffold/v4beta13
 kind: Config
 metadata:
-  name: skaffold-test-db
+  name: litellm
 
 deploy:
   helm:
     releases:
-      - name: skaffold-test-db
-        remoteChart: postgresql
-        repo: https://charts.bitnami.com/bitnami
+      - name: litellm
+        remoteChart: oci://docker.litellm.ai/berriai/litellm-helm
+        upgradeOnChange: true
         valuesFiles:
-          - .helm-db/values.yaml
+          - .helm-litellm/values.yaml
 
 profiles:
   - name: stage
     deploy:
       helm:
         releases:
-          - name: skaffold-test-db
-            remoteChart: postgresql
-            repo: https://charts.bitnami.com/bitnami
+          - name: litellm
+            remoteChart: oci://docker.litellm.ai/berriai/litellm-helm
+            upgradeOnChange: true
             namespace: skaffold-test-stage
             createNamespace: true
             valuesFiles:
-              - .helm-db/values.yaml
+              - .helm-litellm/values.yaml
 
   - name: uat
     deploy:
       helm:
         releases:
-          - name: skaffold-test-db
-            remoteChart: postgresql
-            repo: https://charts.bitnami.com/bitnami
+          - name: litellm
+            remoteChart: oci://docker.litellm.ai/berriai/litellm-helm
+            upgradeOnChange: true
             namespace: skaffold-test-uat
             createNamespace: true
             valuesFiles:
-              - .helm-db/values.yaml
+              - .helm-litellm/values.yaml
 
   - name: production
     deploy:
       helm:
         releases:
-          - name: skaffold-test-db
-            remoteChart: postgresql
-            repo: https://charts.bitnami.com/bitnami
+          - name: litellm
+            remoteChart: oci://docker.litellm.ai/berriai/litellm-helm
+            upgradeOnChange: true
             namespace: skaffold-test-production
             createNamespace: true
             valuesFiles:
-              - .helm-db/values.yaml
+              - .helm-litellm/values.yaml
+
+---
+
+apiVersion: skaffold/v4beta13
+kind: Config
+metadata:
+  name: openclaw
+
+deploy:
+  helm:
+    releases:
+      - name: openclaw
+        chartPath: .helm-openclaw
+        valuesFiles:
+          - .helm-openclaw/values.yaml
+
+profiles:
+  - name: stage
+    deploy:
+      helm:
+        releases:
+          - name: openclaw
+            chartPath: .helm-openclaw
+            namespace: skaffold-test-stage
+            createNamespace: true
+            valuesFiles:
+              - .helm-openclaw/values.yaml
+
+  - name: uat
+    deploy:
+      helm:
+        releases:
+          - name: openclaw
+            chartPath: .helm-openclaw
+            namespace: skaffold-test-uat
+            createNamespace: true
+            valuesFiles:
+              - .helm-openclaw/values.yaml
+
+  - name: production
+    deploy:
+      helm:
+        releases:
+          - name: openclaw
+            chartPath: .helm-openclaw
+            namespace: skaffold-test-production
+            createNamespace: true
+            valuesFiles:
+              - .helm-openclaw/values.yaml

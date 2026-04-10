@@ -56,4 +56,6 @@ Why your command failed:
 ## TODO
 
 - Add cache configs
+- image tag management
+- test dev mode
 - See multiple helm chart declaration

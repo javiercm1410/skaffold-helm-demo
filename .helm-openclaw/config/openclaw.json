@@ -1,0 +1,39 @@
+{
+  "gateway": {
+    "port": 18789,
+    "bind": "lan"
+  },
+  "models": {
+    "providers": {
+      "litellm": {
+        "baseUrl": "http://litellm:4000",
+        "apiKey": "${LITELLM_API_KEY}",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "openrouter",
+            "name": "OpenRouter Auto",
+            "contextWindow": 200000,
+            "maxTokens": 64000
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "workspace": "~/.openclaw/workspace",
+      "model": {
+        "primary": "litellm/openrouter"
+      }
+    }
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "botToken": "${TELEGRAM_BOT_TOKEN}",
+      "dmPolicy": "pairing",
+      "streaming": "partial"
+    }
+  }
+}
