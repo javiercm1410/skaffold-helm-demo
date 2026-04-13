@@ -11,10 +11,10 @@
         "api": "openai-completions",
         "models": [
           {
-            "id": "openrouter",
-            "name": "OpenRouter Auto",
-            "contextWindow": 200000,
-            "maxTokens": 64000
+            "id": "gpt-4o-mini",
+            "name": "GPT-4o Mini",
+            "contextWindow": 128000,
+            "maxTokens": 16384
           }
         ]
       }
@@ -24,7 +24,18 @@
     "defaults": {
       "workspace": "~/.openclaw/workspace",
       "model": {
-        "primary": "litellm/openrouter"
+        "primary": "litellm/gpt-4o-mini"
+      }
+    }
+  },
+  "mcp": {
+    "servers": {
+      "github": {
+        "url": "http://litellm:4000/mcp/",
+        "transport": "streamable-http",
+        "headers": {
+          "x-litellm-api-key": "Bearer ${LITELLM_API_KEY}"
+        }
       }
     }
   },

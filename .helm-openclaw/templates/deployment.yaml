@@ -29,8 +29,11 @@ spec:
             - sh
             - -c
             - |
-              cp /config/openclaw.json /data/openclaw.json
+              sed "s|\${LITELLM_API_KEY}|$LITELLM_API_KEY|g" /config/openclaw.json > /data/openclaw.json
               cp /config/AGENTS.md /data/AGENTS.md
+          envFrom:
+            - secretRef:
+                name: {{ .Values.project }}-secrets
           volumeMounts:
             - name: config
               mountPath: /config
