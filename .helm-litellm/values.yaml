@@ -1,0 +1,55 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/berriai/litellm-database
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 4000
+
+# Master key for admin access - override this in environment-specific values
+masterkeySecretName: ""
+
+
+    # atlassian:
+    #   url: "https://mcp.atlassian.com/v1/mcp"
+    #   auth_type: "basic"
+    #   auth_value: "REPLACE_WITH_JIRA_EMAIL:REPLACE_WITH_JIRA_API_TOKEN"
+
+# Deploy standalone PostgreSQL for LiteLLM
+db:
+  deployStandalone: true
+  secret:
+    name: litellm-db-secret
+  username: litellm
+  password: test-instance
+
+# Bitnami PostgreSQL subchart overrides
+postgresql:
+  primary:
+    persistence:
+      enabled: false
+
+# Disable Redis (not needed for basic testing)
+redis:
+  enabled: false
+
+# Run DB migrations on deploy
+migrationJob:
+  enabled: true
+
+# Resource limits for testing
+resources:
+  requests:
+    cpu: 400m
+    memory: 512Mi
+  limits:
+    cpu: 1500m
+    memory: 2Gi
+
+ingress:
+  enabled: false
+
+autoscaling:
+  enabled: false
